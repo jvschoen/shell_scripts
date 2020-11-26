@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# exit when any command fails
+set -e
+
+echo
+echo "Making project dir for ${1}"
+mkdir $1
+
+cd ${1} 
+echo
+echo "Making venv"
+python3 -m venv venv
+
+source venv/bin/activate
+
+echo
+echo "Installing DS packages"
+venv/bin/pip install --upgrade pip
+venv/bin/pip install wheel scikit-learn pandas numpy scipy plotly dash matplotlib seaborn tensorflow nltk spacy jupyter ipykernel
+
+echo
+echo "Making requirements.txt"
+pip freeze > requirements.txt
+
+echo
+echo "Adding jupyter kernel under this venv"
+venv/bin/python -m ipykernel install --name=${1} --user
+
+
+# brew install hub
+
+echo "Initializing Github Repo"
+git init
+
+echo "venv/*" > .gitignore
+
+git add .
+git commit -m 'New Data Science Project'
+git checkout -b develop
+
+echo "Creating repo remotely"
+hub create
+git push -u origin --all
