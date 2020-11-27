@@ -34,6 +34,7 @@ echo "Initializing Github Repo"
 git init
 
 echo "venv/*" > .gitignore
+echo ".ipynb_checkpoints/" >> .gitignore
 
 git add .
 git commit -m 'New Data Science Project'
